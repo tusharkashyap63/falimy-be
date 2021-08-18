@@ -10,7 +10,7 @@ router.route('/').post((req, res) => {
 });
 
 router.route('/').get((req, res) => {
-  User.find({ auth0Id: req.user.sub })
+  User.findOne({ auth0Id: req.user.sub })
     .then((user) => res.json(user))
     .catch((err) => res.status(400).json('Error! ' + err));
 });
