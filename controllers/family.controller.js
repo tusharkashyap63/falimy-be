@@ -12,8 +12,8 @@ router.route('/').post((req, res) => {
     .catch((err) => res.status(400).json('Error! ' + err));
 });
 
-router.route('/').get((req, res) => {
-  const userId = mongoose.Types.ObjectId(req.query.id);
+router.route('/:id').get((req, res) => {
+  const userId = mongoose.Types.ObjectId(req.params.id);
   Family.find({ members: userId }).then((families) => res.json(families));
 });
 
