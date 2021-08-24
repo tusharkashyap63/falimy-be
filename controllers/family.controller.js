@@ -5,18 +5,16 @@ const router = require('express').Router();
 
 router.route('/').post((req, res) => {
   const head = mongoose.Types.ObjectId(req.body.head);
-  const newFamily = new Family({ ...req.body, head });
+  const newFamily = new Family({ ...req.body, head, members: [head] });
   newFamily
     .save()
-    .then((family) => {
-      User.findByIdAndUpdate(
-        req.body.head,
-        { $addToSet: { families: [mongoose.Types.ObjectId(family._id)] } },
-        { new: true }
-      );
-      res.json(family);
-    })
+    .then((family) => res.json(family))
     .catch((err) => res.status(400).json('Error! ' + err));
+});
+
+router.route('/').get((req, res) => {
+  const userId = mongoose.Types.ObjectId(req.query.id);
+  Family.find({ members: userId }).then((families) => res.json(families));
 });
 
 module.exports = router;
